@@ -5,19 +5,41 @@
 #include "Components.hpp"
 
 using namespace std;
-int min_value(Photo from, Photo to);
+//returns value of edge from 'from' to 'to'
+int min_value(Slide from, Slide to)
+{
+    vector<string> fromTags = from.get_tags();
+    vector<string> toTags = to.get_tags();
+    int uniqueFrom = fromTags.size();
+    int uniqueTo = toTags.size();
+    int similar = 0;
 
-void load_photos(int no_of_photos, vector<Photo>& horizontal, vector<Photo>& vertical){
+    for(int i = 0; i < fromTags.size(); i++)
+    {
+        for(int j = 0; j < toTags.size(); j++)
+        {
+            if(fromTags[i] == toTags[j])
+            {
+                uniqueFrom--;
+                uniqueTo--;
+                similar++;
+            }
+        }
+    }
+    int result = min(min(uniqueFrom, uniqueTo),similar);
+    return result;
+}
+void load_photos(int no_of_photos, vector<Photo>& horizontal, vector<Photo>& vertical, fstream& in){
     int it = 0, no_of_tags = 0;
     char orient;
     vector<string> tags;
     string tag;
     while(it<no_of_photos){
         tags.clear();
-        cin >> orient;
-        cin >> no_of_tags;
+        in >> orient;
+        in >> no_of_tags;
         for(int i = 0; i < no_of_tags; i++){
-            cin >> tag;
+            in >> tag;
             tags.push_back(tag);
         }
         Photo photo(it,orient,no_of_tags,tags);
@@ -55,20 +77,19 @@ int get_tag_number(vector<string> p1,vector<string> p2)
     return number;
 }
 
-vector<Slide> merge_veritical(vector<Photo> vertical_photos)
+vector<Slide> marge_vertical(vector<Photo> vertical_photos)
 {
-    vector<Slide> mearged;
-    cout<<"Here"<<endl;
-    Photo photo_pom(-1,0,0,vector<string>());
+    vector<Slide> marged;
+    vector<string> empty;
+    Photo photo_pom(-1,0,0,empty);
     int no_of_tags_pom=0;
-    cout<<"Here"<<endl;
     for(auto main_photo: vertical_photos)
     {
-        cout<<"Here"<<endl;
         no_of_tags_pom =0;
+        photo_pom=Photo(-1,0,0,empty);
         for(auto photo: vertical_photos)
         {
-            if(main_photo.get_id() != photo.get_id())
+            if(main_photo.get_id() < photo.get_id())
             {
                 if(no_of_tags_pom<get_tag_number(main_photo.get_tags(),photo.get_tags()))
                 {
@@ -79,57 +100,41 @@ vector<Slide> merge_veritical(vector<Photo> vertical_photos)
         }
         if(photo_pom.get_id()!=-1)
         {
-            cout<<"Here get id"<<endl;
             Slide slide;
             slide.add_photo(main_photo);
             slide.add_photo(photo_pom);
-            mearged.push_back(slide);
+            marged.push_back(slide);
         }
     }
+    return marged;
 }
 
 int main(int argc, char* argv[]) {
 
+    fstream inf;
+    string path = argv[1];
+    inf.open(path,fstream::in);
     int no_of_photos = 0, it = 0, no_of_tags = 0;
     vector<Photo> horizontal_photos;
     vector<Photo> vertical_photos;
     vector<Slide> slides;
-    cin >> no_of_photos;
-    load_photos(no_of_photos, horizontal_photos, vertical_photos);
+    vector<Slide> vertical_slides;
+    inf >> no_of_photos;
+    load_photos(no_of_photos, horizontal_photos, vertical_photos, inf);
 
     // for(auto photo : horizontal_photos) photo.show_photo();
 
     // for(auto photo : vertical_photos) photo.show_photo();
-    cout<<min_value(horizontal_photos[0], horizontal_photos[1]);
+    // cout<<min_value(horizontal_photos[0], horizontal_photos[1]);
     for(auto photo : horizontal_photos){
         Slide new_slide;
         new_slide.add_photo(photo);
         slides.push_back(new_slide);
     }
+    vertical_slides = marge_vertical(vertical_photos);
+    slides.insert(slides.end(), vertical_slides.begin(), vertical_slides.end());
+    // for(auto slide : slides) slide.show_slide();
     print_to_file(slides);
+    inf.close();
     return 0;
-}
-//returns value of edge from 'from' to 'to'
-int min_value(Slide from, Slide to)
-{
-    vector<string> fromTags = from.get_tags();
-    vector<string> toTags = to.get_tags();
-    int uniqueFrom = fromTags.size();
-    int uniqueTo = toTags.size();
-    int similar = 0;
-
-    for(int i = 0; i < fromTags.size(); i++)
-    {
-        for(int j = 0; j < toTags.size(); j++)
-        {
-            if(fromTags[i] == toTags[j])
-            {
-                uniqueFrom--;
-                uniqueTo--;
-                similar++;
-            }
-        }
-    }
-    int result = min(min(uniqueFrom, uniqueTo),similar);
-    return result;
 }
