@@ -38,9 +38,20 @@ private:
     std::vector<Photo> photos;
 };
 
+class Pair{
+    Photo photo;
+    int edge_value;
+};
+
+class Node{
+public:
+    std::vector<Pair> edges;
+    bool was_seen;
+};
+
 class Graf{
 public:
-    std::vector<std::vector<Photo>> graphik;
+    std::vector<Node> graphik;
 };
 
 #endif//COMPONENTS_H
