@@ -35,6 +35,7 @@ class Slide {
 public:
     void add_photo(Photo photo);
     std::vector<Photo> get_photos() {return photos;};
+    std::vector<std::string> get_tags() {return tags_of_photos;};
 private:
     std::vector<Photo> photos;
     std::vector<std::string> tags_of_photos;
