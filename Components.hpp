@@ -31,6 +31,30 @@ Photo::Photo(const Photo& source){
     tags = source.tags;
 }
 
+int min_value(Slide from, Slide to)
+{
+    vector<string> fromTags = from.get_tags();
+    vector<string> toTags = to.get_tags();
+    int uniqueFrom = fromTags.size();
+    int uniqueTo = toTags.size();
+    int similar = 0;
+
+    for(int i = 0; i < fromTags.size(); i++)
+    {
+        for(int j = 0; j < toTags.size(); j++)
+        {
+            if(fromTags[i] == toTags[j])
+            {
+                uniqueFrom--;
+                uniqueTo--;
+                similar++;
+            }
+        }
+    }
+    int result = min(min(uniqueFrom, uniqueTo),similar);
+    return result;
+}
+
 class Slide {
 public:
     void add_photo(Photo photo);
@@ -62,7 +86,23 @@ public:
 };
 
 void Graf::make_graf(std::vector<Slide> & slides){
-    
+    for(int i = 0; i < slides.size()-1 ; i++)
+    {
+        for(int j = i + 1; j < slides.size(); j++)
+        {
+            int val = min_value(slides(i), slides(j));
+            if(val != 0)
+            {
+                graphik[i].push_back(i);
+                graphik[i].push_back(j);
+                graphik[i].push_back(val);
+                graphik[j].push_back(j);
+                graphik[j].push_back(i);
+                graphik[j].push_back(val);
+            }
+        }
+    }
 }
+
 
 #endif//COMPONENTS_H
