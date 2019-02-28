@@ -29,8 +29,8 @@ void load_photos(int no_of_photos, vector<Photo>& horizontal, vector<Photo>& ver
 
 void print_to_file(vector<Slide> slides){
     fstream fs;
-    fs.open("output.txt",fstream::app);
-    fs << slides.size();
+    fs.open("output.txt",fstream::out);
+    fs << slides.size() << "\n";
     for(auto slide: slides){
         for(auto photo : slide.get_photos()) fs << photo.get_id() << " ";
         fs << "\n";
