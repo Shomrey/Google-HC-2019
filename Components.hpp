@@ -13,7 +13,6 @@ public:
     void show_photo() {std::cout<<"id: "<<photo_id<<", no_of_tags: "<<no_of_tags<<std::endl<<"tags: "; for(auto tag : tags) std::cout<<tag<<", ";std::cout<<std::endl;};
     int get_num_of_tags(){ return no_of_tags;}
     std::vector<std::string> get_tags(){ return tags;}
-    
 private:
 
     int photo_id;
@@ -28,10 +27,13 @@ class Slide {
 public:
     void add_photo(Photo photo) {photos.push_back(photo);};
     std::vector<Photo> get_photos() {return photos;};
-    void show_slide() {std::cout<<"Next slide"<<std::endl;for(auto photo: photos) photo.show_photo();}
 private:
     std::vector<Photo> photos;
 };
 
-#endif//COMPONENTS_H
+class Graf{
+public:
+    std::vector<std::vector<Photo>> graphik;
+};
 
+#endif//COMPONENTS_H
