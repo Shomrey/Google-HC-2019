@@ -55,13 +55,16 @@ int get_tag_number(vector<string> p1,vector<string> p2)
     return number;
 }
 
-vector<Slide> marge_vertical(vector<Photo> vertical_photos)
+vector<Slide> merge_veritical(vector<Photo> vertical_photos)
 {
     vector<Slide> mearged;
+    cout<<"Here"<<endl;
     Photo photo_pom(-1,0,0,vector<string>());
     int no_of_tags_pom=0;
+    cout<<"Here"<<endl;
     for(auto main_photo: vertical_photos)
     {
+        cout<<"Here"<<endl;
         no_of_tags_pom =0;
         for(auto photo: vertical_photos)
         {
@@ -76,6 +79,7 @@ vector<Slide> marge_vertical(vector<Photo> vertical_photos)
         }
         if(photo_pom.get_id()!=-1)
         {
+            cout<<"Here get id"<<endl;
             Slide slide;
             slide.add_photo(main_photo);
             slide.add_photo(photo_pom);
@@ -89,15 +93,20 @@ int main(int argc, char* argv[]) {
     int no_of_photos = 0, it = 0, no_of_tags = 0;
     vector<Photo> horizontal_photos;
     vector<Photo> vertical_photos;
-
+    vector<Slide> slides;
     cin >> no_of_photos;
     load_photos(no_of_photos, horizontal_photos, vertical_photos);
 
-    for(auto photo : horizontal_photos) photo.show_photo();
+    // for(auto photo : horizontal_photos) photo.show_photo();
 
-    for(auto photo : vertical_photos) photo.show_photo();
+    // for(auto photo : vertical_photos) photo.show_photo();
     cout<<min_value(horizontal_photos[0], horizontal_photos[1]);
-
+    for(auto photo : horizontal_photos){
+        Slide new_slide;
+        new_slide.add_photo(photo);
+        slides.push_back(new_slide);
+    }
+    print_to_file(slides);
     return 0;
 }
 //returns value of edge from 'from' to 'to'
