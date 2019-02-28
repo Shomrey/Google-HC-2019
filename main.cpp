@@ -5,6 +5,7 @@
 #include "Components.hpp"
 
 using namespace std;
+int min_value(Photo from, Photo to);
 
 void load_photos(int no_of_photos, vector<Photo>& horizontal, vector<Photo>& vertical){
     int it = 0, no_of_tags = 0;
@@ -20,22 +21,16 @@ void load_photos(int no_of_photos, vector<Photo>& horizontal, vector<Photo>& ver
             tags.push_back(tag);
         }
         Photo photo(it,orient,no_of_tags,tags);
-        if(photo.get_orientation() == 'H'){
-            cout<<"Pushed h"<<endl;
-            horizontal.push_back(photo);
-        }
-        else{
-            cout<<"Pushed v"<<endl;
-            vertical.push_back(photo);
-        }
+        if(photo.get_orientation() == 'H') horizontal.push_back(photo);
+        else vertical.push_back(photo);
         it++;
     }
 }
 
 void print_to_file(vector<Slide> slides){
     fstream fs;
-    fs.open("output.txt",fstream::out);
-    fs << slides.size() << "\n";
+    fs.open("output.txt",fstream::app);
+    fs << slides.size();
     for(auto slide: slides){
         for(auto photo : slide.get_photos()) fs << photo.get_id() << " ";
         fs << "\n";
@@ -51,15 +46,34 @@ int main(int argc, char* argv[]) {
 
     cin >> no_of_photos;
     load_photos(no_of_photos, horizontal_photos, vertical_photos);
-    // for(auto photo : vertical_photos) photo.show_photo();
-    // for(auto photo : horizontal_photos) photo.show_photo();
-    // vector<Slide> slides;
-    // Slide slide1, slide2;
-    // slide1.add_photo(horizontal_photos[0]);
-    // slide2.add_photo(vertical_photos[0]);
-    // slide2.add_photo(vertical_photos[1]);
-    // slides.push_back(slide1);
-    // slides.push_back(slide2);
-    // print_to_file(slides);
+
+    for(auto photo : horizontal_photos) photo.show_photo();
+
+    for(auto photo : vertical_photos) photo.show_photo();
+    cout<<min_value(horizontal_photos[0], horizontal_photos[1]);
+
     return 0;
+}
+//returns value of edge from 'from' to 'to'
+int min_value(Photo from, Photo to)
+{
+    int uniqueFrom = from.get_num_of_tags();
+    int uniqueTo = to.get_num_of_tags();
+    int similar = 0;
+    vector<string> fromTags = from.get_tags();
+    vector<string> toTags = to.get_tags();
+    for(int i = 0; i < fromTags.size(); i++)
+    {
+        for(int j = 0; j < toTags.size(); j++)
+        {
+            if(fromTags[i] == toTags[j])
+            {
+                uniqueFrom--;
+                uniqueTo--;
+                similar++;
+            }
+        }
+    }
+    int result = min(min(uniqueFrom, uniqueTo),similar);
+    return result;
 }
