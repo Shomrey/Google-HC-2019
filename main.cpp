@@ -3,43 +3,46 @@
 #include <string>
 
 using namespace std;
-class Zdjecie{
+class Photo{
     public:
-    Zdjecie(char orient, int no_of_tags);
-    int pobierz_id()    {return id_zdj;}
+    Photo(int id, char orient, int no_of_tags, vector<string> tagi): photo_id(id), orientation(orient), no_of_tags(no_of_tags), tags(tagi){};
+    int get_id()    {return photo_id;}
+    void show_photo() {std::cout<<"id: "<<photo_id<<", no_of_tags: "<<no_of_tags<<std::endl<<"tags: "; for(auto tag : tags) std::cout<<tag<<", ";std::cout<<std::endl;};
     private:
-    int id_zdj;
+    int photo_id;
     vector<string> tags;
-    int ilosc_tagow;
-    char orientacja;
+    int no_of_tags;
+    char orientation;
 
     
 };
 
-Zdjecie::Zdjecie(char orient, int no_of_tags): orientacja(orient), ilosc_tagow(no_of_tags){}
-
-class Slajd {
+class Slide {
     public:
-    Slajd();
+    void add_photo(Photo photo) {zdjecia.push_back(photo);};
     private:
-    vector<Zdjecie> zdjecia;
-
-
+    vector<Photo> zdjecia;
 };
+
 int main(int argc, char* argv[]) {
-    vector<Zdjecie> wczytane_zdjecia;
-    int ilosc_zdjec = 0, it = 0, no_of_tags = 0;
+    vector<Photo> loaded_photos;
+    int no_of_photos = 0, it = 0, no_of_tags = 0;
     char orient;
-    vector<string> tagi;
+    vector<string> tags;
     string tag;
-    cin >> ilosc_zdjec;
-    while(it<ilosc_zdjec){
-        tagi.clear();
+    cin >> no_of_photos;
+    while(it<no_of_photos){
+        tags.clear();
         cin >> orient;
         cin >> no_of_tags;
-        Zdjecie zdj(orient,no_of_tags);
-        
+        for(int i = 0; i < no_of_tags; i++){
+            cin >> tag;
+            tags.push_back(tag);
+        }
+        Photo photo(it,orient,no_of_tags,tags);
+        loaded_photos.push_back(photo);
         it++;
     }
+    for(auto photo: loaded_photos) photo.show_photo();
     return 0;
 }
