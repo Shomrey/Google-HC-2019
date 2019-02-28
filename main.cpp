@@ -38,6 +38,52 @@ void print_to_file(vector<Slide> slides){
     fs.close();
 }
 
+int get_tag_number(vector<string> p1,vector<string> p2)
+{
+    int number =0;
+    for(auto tag1: p1)
+    {
+        for(auto tag2:p2)
+        {
+            if(tag1.compare(tag2))
+            {
+                number++;
+                break;
+            }
+        }
+    }
+    return number;
+}
+
+vector<Slide> marge_vertical(vector<Photo> vertical_photos)
+{
+    vector<Slide> mearged;
+    Photo photo_pom(-1,0,0,vector<string>());
+    int no_of_tags_pom=0;
+    for(auto main_photo: vertical_photos)
+    {
+        no_of_tags_pom =0;
+        for(auto photo: vertical_photos)
+        {
+            if(main_photo.get_id() != photo.get_id())
+            {
+                if(no_of_tags_pom<get_tag_number(main_photo.get_tags(),photo.get_tags()))
+                {
+                    no_of_tags_pom = get_tag_number(main_photo.get_tags(),photo.get_tags());
+                    photo_pom = photo;
+                }
+            }
+        }
+        if(photo_pom.get_id()!=-1)
+        {
+            Slide slide;
+            slide.add_photo(main_photo);
+            slide.add_photo(photo_pom);
+            mearged.push_back(slide);
+        }
+    }
+}
+
 int main(int argc, char* argv[]) {
 
     int no_of_photos = 0, it = 0, no_of_tags = 0;
