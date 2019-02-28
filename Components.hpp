@@ -35,7 +35,11 @@ class Slide {
 public:
     void add_photo(Photo photo);
     std::vector<Photo> get_photos() {return photos;};
+    std::vector<std::string> get_tags() {return tags_of_photos;};
+    bool is_visited() {return visited;};
+    void visit() {visited = true;};
 private:
+    bool visited = false;
     std::vector<Photo> photos;
     std::vector<std::string> tags_of_photos;
 };
