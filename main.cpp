@@ -110,13 +110,14 @@ int main(int argc, char* argv[]) {
     return 0;
 }
 //returns value of edge from 'from' to 'to'
-int min_value(Photo from, Photo to)
+int min_value(Slide from, Slide to)
 {
-    int uniqueFrom = from.get_num_of_tags();
-    int uniqueTo = to.get_num_of_tags();
-    int similar = 0;
     vector<string> fromTags = from.get_tags();
     vector<string> toTags = to.get_tags();
+    int uniqueFrom = fromTags.size();
+    int uniqueTo = toTags.size();
+    int similar = 0;
+
     for(int i = 0; i < fromTags.size(); i++)
     {
         for(int j = 0; j < toTags.size(); j++)
