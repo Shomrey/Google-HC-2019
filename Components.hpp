@@ -35,7 +35,6 @@ class Slide {
 public:
     void add_photo(Photo photo);
     std::vector<Photo> get_photos() {return photos;};
-    std::vector<std::string> get_tags() {return tags_of_photos;};
 private:
     std::vector<Photo> photos;
     std::vector<std::string> tags_of_photos;
@@ -53,7 +52,13 @@ void Slide::add_photo(Photo photo){
 
 class Graf{
 public:
-    std::vector<std::vector<Photo>> graphik;
+    Graf(){};
+    std::vector<std::vector<int>> graphik;
+    void make_graf(std::vector<Slide> & slides);
 };
+
+void Graf::make_graf(std::vector<Slide> & slides){
+    
+}
 
 #endif//COMPONENTS_H
