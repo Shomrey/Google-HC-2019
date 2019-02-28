@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <fstream>
 #include "Components.hpp"
 
 using namespace std;
@@ -23,6 +24,17 @@ void load_photos(int no_of_photos, vector<Photo> horizontal, vector<Photo> verti
         else vertical.push_back(photo);
         it++;
     }
+}
+
+void print_to_file(vector<Slide> slides){
+    fstream fs;
+    fs.open("output.txt",fstream::app);
+    fs << slides.size();
+    for(auto slide: slides){
+        for(auto photo : slide.get_photos()) fs << photo.get_id() << " ";
+        fs << "\n";
+    }
+    fs.close();
 }
 
 int main(int argc, char* argv[]) {

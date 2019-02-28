@@ -22,9 +22,11 @@ class Photo{
 
 class Slide {
     public:
-    void add_photo(Photo photo) {zdjecia.push_back(photo);};
+    void add_photo(Photo photo) {photos.push_back(photo);};
+    vector<Photo> get_photos() {return photos;};
     private:
-    std::vector<Photo> zdjecia;
+    std::vector<Photo> photos;
 };
 
 #endif//COMPONENTS_H
+
