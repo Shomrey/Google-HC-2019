@@ -8,6 +8,7 @@ class Photo{
 public:
 
     Photo(int id, char orient, int no_of_tags, std::vector<std::string> tags): photo_id(id), orientation(orient), no_of_tags(no_of_tags), tags(tags){};
+    Photo(Photo& source); //cc-tor
     int get_id()    {return photo_id;};
     char get_orientation() {return orientation;};
     void show_photo() {std::cout<<"id: "<<photo_id<<", no_of_tags: "<<no_of_tags<<std::endl<<"tags: "; for(auto tag : tags) std::cout<<tag<<", ";std::cout<<std::endl;};
@@ -22,6 +23,12 @@ private:
 
 
 };
+Photo::Photo(Photo& source){
+    photo_id = source.photo_id;
+    orientation = source.orientation;
+    no_of_tags = source.no_of_tags;
+    tags = source.tags;
+}
 
 class Slide {
 public:
