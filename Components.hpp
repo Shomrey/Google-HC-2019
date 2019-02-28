@@ -37,7 +37,7 @@ public:
     std::vector<Photo> get_photos() {return photos;};
 private:
     std::vector<Photo> photos;
-    std::vector<string> tags_of_photos;
+    std::vector<std::string> tags_of_photos;
 };
 
 void Slide::add_photo(Photo photo){
